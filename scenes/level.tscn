@@ -1,20 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://brxejphnlvkkt"]
+[gd_scene load_steps=7 format=3 uid="uid://brxejphnlvkkt"]
 
+[ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
 [ext_resource type="Script" path="res://scenes/CharacterBody2D.gd" id="1_m2mmq"]
 [ext_resource type="Texture2D" uid="uid://b3ccojcrg4i4i" path="res://icon.svg" id="2_q725h"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vro0e"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qisxi"]
+noise = SubResource("FastNoiseLite_vro0e")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
 
 [node name="Level" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="PlayerCamera" type="Camera2D" parent="."]
+script = ExtResource("1_2wegk")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="Map" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Map"]
+texture = SubResource("NoiseTexture2D_qisxi")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+unique_name_in_owner = true
+motion_mode = 1
+platform_on_leave = 2
 script = ExtResource("1_m2mmq")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_yy7ra")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
 scale = Vector2(-0.155, 0.155)
 texture = ExtResource("2_q725h")
