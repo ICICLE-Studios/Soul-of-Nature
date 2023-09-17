@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnwknvhvcr7u8"]
+[gd_scene load_steps=6 format=3 uid="uid://bnwknvhvcr7u8"]
 
 [ext_resource type="Script" path="res://scripts/attacks/player_fireball.gd" id="1_owery"]
 [ext_resource type="Texture2D" uid="uid://brjq2uai8afjx" path="res://sprites/circle_gradient.png" id="2_ogl8h"]
 [ext_resource type="Texture2D" uid="uid://dq4ucpirj5oa1" path="res://sprites/attacks/placeholder_fireball.png" id="3_j31ft"]
+[ext_resource type="AudioStream" uid="uid://dd1r3ste41gw0" path="res://audios/fire-magic.mp3" id="4_8boji"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wvlly"]
 
@@ -26,5 +27,9 @@ texture = ExtResource("3_j31ft")
 wait_time = 5.0
 one_shot = true
 autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_8boji")
+autoplay = true
 
 [connection signal="timeout" from="DestroyTimer" to="." method="_on_destroy_timer_timeout"]

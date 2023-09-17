@@ -28,14 +28,14 @@ func makepath():
 func _on_timer_timeout():
 	makepath()
 
-func _on_area_2d_area_entered(area):
-	detection = area.owner
-	print("Entra jugador")
-	pass 
+func _on_area_2d_body_entered(body):
+	if body.get_collision_layer() == 1: 
+		detection = body
+		print("Entra jugador")
 
-
-func _on_area_2d_area_exited(area):
-	if detection == area.owner:
+func _on_area_2d_body_exited(body):
+	if body.get_collision_layer() == 1:
 		print("Sale jugador")
 		detection = null
-	pass
+
+
