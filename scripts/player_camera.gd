@@ -8,9 +8,6 @@ const mouse_look_range = 100.0
 @onready var player = %Player
 
 
-func _ready():
-	pass
-
 func _physics_process(delta):
 	var player_position = player.position
 	var mouse_position = get_viewport().get_mouse_position()

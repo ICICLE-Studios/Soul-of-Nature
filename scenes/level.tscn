@@ -1,19 +1,16 @@
 [gd_scene load_steps=12 format=3 uid="uid://brxejphnlvkkt"]
 
 [ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
+[ext_resource type="Texture2D" uid="uid://bghesvkb3fcbr" path="res://sprites/map/placeholder_ground.png" id="2_317b5"]
 [ext_resource type="Texture2D" uid="uid://b3ccojcrg4i4i" path="res://icon.svg" id="2_q725h"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vpdyx"]
-[ext_resource type="Script" path="res://scripts/Enemy/enemy_controller.gd" id="4_gshsc"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="4_k6ifc"]
+[ext_resource type="Texture2D" uid="uid://der7jld5necin" path="res://sprites/enemies/placeholder_fire_enemy.png" id="5_c8hpm"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
 vertices = PackedVector2Array(117, -257, 256, -254, 257, 23, 255, 257, -258, 256, -256, -53, -45, -257, -257, -256)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5, 6), PackedInt32Array(6, 5, 7)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-45, -257, -257, -256, -256, -53, -258, 256, 255, 257, 257, 23, 256, -254, 117, -257)])
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_vro0e"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qisxi"]
-noise = SubResource("FastNoiseLite_vro0e")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
 
@@ -29,13 +26,16 @@ radius = 79.0
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_5vf1p")
 
-[node name="PlayerCamera" type="Camera2D" parent="."]
-script = ExtResource("1_2wegk")
-
 [node name="Map" type="Node2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="Map"]
-texture = SubResource("NoiseTexture2D_qisxi")
+[node name="GroundSprite" type="Sprite2D" parent="Map"]
+z_index = -1
+texture_filter = 1
+texture_repeat = 2
+scale = Vector2(64, 64)
+texture = ExtResource("2_317b5")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
@@ -61,12 +61,12 @@ shape = SubResource("CircleShape2D_oxssa")
 collision_layer = 2
 motion_mode = 1
 wall_min_slide_angle = 0.0
-script = ExtResource("4_gshsc")
+script = ExtResource("4_k6ifc")
 player = NodePath("../Player")
 
 [node name="Sprite2D" type="Sprite2D" parent="Enemy"]
-scale = Vector2(0.26, 0.26)
-texture = ExtResource("2_q725h")
+scale = Vector2(0.085815, 0.085815)
+texture = ExtResource("5_c8hpm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
 scale = Vector2(1.84, 1.84)
@@ -88,6 +88,10 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Area/Area2D"]
 shape = SubResource("CircleShape2D_0wwgh")
 debug_color = Color(0.823529, 0, 0, 0.419608)
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+script = ExtResource("1_2wegk")
 
 [connection signal="timeout" from="Enemy/Navigation/Timer" to="Enemy" method="_on_timer_timeout"]
 [connection signal="area_entered" from="Enemy/Area/Area2D" to="Enemy" method="_on_area_2d_area_entered"]
