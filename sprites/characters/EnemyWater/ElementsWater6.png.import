@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vretasntj6oj"
-path="res://.godot/imported/placeholder_plant_enemy.png-82d1ab745e957f69cb84bd436592eff0.ctex"
+uid="uid://y0irfrn2s4gn"
+path="res://.godot/imported/ElementsWater6.png-ecd99bbf064a650d30b40089b8f19fb9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/enemies/placeholder_plant_enemy.png"
-dest_files=["res://.godot/imported/placeholder_plant_enemy.png-82d1ab745e957f69cb84bd436592eff0.ctex"]
+source_file="res://sprites/characters/EnemyWater/ElementsWater6.png"
+dest_files=["res://.godot/imported/ElementsWater6.png-ecd99bbf064a650d30b40089b8f19fb9.ctex"]
 
 [params]
 

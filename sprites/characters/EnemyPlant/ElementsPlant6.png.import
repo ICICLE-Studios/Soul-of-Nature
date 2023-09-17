@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dytdqalgab2pu"
-path="res://.godot/imported/placeholder_electric_enemy.png-96a8439e94bcf379b67d6b29c6576e58.ctex"
+uid="uid://d12846qnh65ac"
+path="res://.godot/imported/ElementsPlant6.png-0a8890f60755490a63ec63b1bdf83ca8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/enemies/placeholder_electric_enemy.png"
-dest_files=["res://.godot/imported/placeholder_electric_enemy.png-96a8439e94bcf379b67d6b29c6576e58.ctex"]
+source_file="res://sprites/characters/EnemyPlant/ElementsPlant6.png"
+dest_files=["res://.godot/imported/ElementsPlant6.png-0a8890f60755490a63ec63b1bdf83ca8.ctex"]
 
 [params]
 

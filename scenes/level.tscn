@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vpdyx"]
 [ext_resource type="Texture2D" uid="uid://dk8tcivkhqlfb" path="res://sprites/placeholder_player.png" id="3_p1ke0"]
 [ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="4_k6ifc"]
-[ext_resource type="Texture2D" uid="uid://der7jld5necin" path="res://sprites/enemies/placeholder_fire_enemy.png" id="5_c8hpm"]
+[ext_resource type="Texture2D" uid="uid://der7jld5necin" path="res://sprites/characters/placeholder_fire_enemy.png" id="6_i3jum"]
 [ext_resource type="Texture2D" uid="uid://brjq2uai8afjx" path="res://sprites/circle_gradient.png" id="7_rm8mu"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
@@ -93,7 +93,7 @@ texture = ExtResource("7_rm8mu")
 
 [node name="Sprite" type="Sprite2D" parent="Enemy"]
 scale = Vector2(0.085815, 0.085815)
-texture = ExtResource("5_c8hpm")
+texture = ExtResource("6_i3jum")
 
 [node name="LevelLabel" type="Label" parent="Enemy"]
 anchors_preset = -1
