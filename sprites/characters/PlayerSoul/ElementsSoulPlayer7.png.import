@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bf1kh4ka7amub"
-path="res://.godot/imported/placeholder_water_enemy.png-e132c759918a5b53c38ba2e9eb4a2cc1.ctex"
+uid="uid://cc15lo52aean1"
+path="res://.godot/imported/ElementsSoulPlayer7.png-584186d6f8a6ef710096ff81bc56a576.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/enemies/placeholder_water_enemy.png"
-dest_files=["res://.godot/imported/placeholder_water_enemy.png-e132c759918a5b53c38ba2e9eb4a2cc1.ctex"]
+source_file="res://sprites/characters/PlayerSoul/ElementsSoulPlayer7.png"
+dest_files=["res://.godot/imported/ElementsSoulPlayer7.png-584186d6f8a6ef710096ff81bc56a576.ctex"]
 
 [params]
 

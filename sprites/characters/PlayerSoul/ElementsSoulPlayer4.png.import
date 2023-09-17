@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://der7jld5necin"
-path="res://.godot/imported/placeholder_fire_enemy.png-27f93315a50086b96d2e16c04dd7d07e.ctex"
+uid="uid://cpjsgx78edcmu"
+path="res://.godot/imported/ElementsSoulPlayer4.png-8bb27294f11a8f9e38430556af65ca2e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/enemies/placeholder_fire_enemy.png"
-dest_files=["res://.godot/imported/placeholder_fire_enemy.png-27f93315a50086b96d2e16c04dd7d07e.ctex"]
+source_file="res://sprites/characters/PlayerSoul/ElementsSoulPlayer4.png"
+dest_files=["res://.godot/imported/ElementsSoulPlayer4.png-8bb27294f11a8f9e38430556af65ca2e.ctex"]
 
 [params]
 
