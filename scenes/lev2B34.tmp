@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://brxejphnlvkkt"]
+
+[ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
+[ext_resource type="Texture2D" uid="uid://b3ccojcrg4i4i" path="res://icon.svg" id="2_q725h"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vpdyx"]
+[ext_resource type="Script" path="res://scripts/Enemy/enemy_controller.gd" id="4_gshsc"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vro0e"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qisxi"]
+noise = SubResource("FastNoiseLite_vro0e")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
+
+[node name="Level" type="Node2D"]
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+script = ExtResource("1_2wegk")
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Map"]
+texture = SubResource("NoiseTexture2D_qisxi")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(100, 100)
+motion_mode = 1
+platform_on_leave = 2
+script = ExtResource("2_vpdyx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_yy7ra")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+scale = Vector2(-0.155, 0.155)
+texture = ExtResource("2_q725h")
+
+[node name="Enemy" type="CharacterBody2D" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("4_gshsc")
+player = NodePath("../Player")
+
+[node name="Sprite2D" type="Sprite2D" parent="Enemy"]
+scale = Vector2(0.26, 0.26)
+texture = ExtResource("2_q725h")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Enemy"]
+
+[node name="Timer" type="Timer" parent="Enemy"]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Enemy/Timer" to="Enemy" method="_on_timer_timeout"]

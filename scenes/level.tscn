@@ -1,8 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://brxejphnlvkkt"]
+[gd_scene load_steps=12 format=3 uid="uid://brxejphnlvkkt"]
 
 [ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
-[ext_resource type="Script" path="res://scenes/CharacterBody2D.gd" id="1_m2mmq"]
 [ext_resource type="Texture2D" uid="uid://b3ccojcrg4i4i" path="res://icon.svg" id="2_q725h"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vpdyx"]
+[ext_resource type="Script" path="res://scripts/Enemy/enemy_controller.gd" id="4_gshsc"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
+vertices = PackedVector2Array(117, -257, 256, -254, 257, 23, 255, 257, -258, 256, -256, -53, -45, -257, -257, -256)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5, 6), PackedInt32Array(6, 5, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-45, -257, -257, -256, -256, -53, -258, 256, 255, 257, 257, 23, 256, -254, 117, -257)])
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vro0e"]
 
@@ -11,7 +17,17 @@ noise = SubResource("FastNoiseLite_vro0e")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_oxssa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kmxbj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0wwgh"]
+radius = 79.0
+
 [node name="Level" type="Node2D"]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_5vf1p")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 script = ExtResource("1_2wegk")
@@ -23,9 +39,10 @@ texture = SubResource("NoiseTexture2D_qisxi")
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
+position = Vector2(100, 100)
 motion_mode = 1
 platform_on_leave = 2
-script = ExtResource("1_m2mmq")
+script = ExtResource("2_vpdyx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_yy7ra")
@@ -33,3 +50,45 @@ shape = SubResource("CircleShape2D_yy7ra")
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 scale = Vector2(-0.155, 0.155)
 texture = ExtResource("2_q725h")
+
+[node name="Area2D" type="Area2D" parent="Player"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
+shape = SubResource("CircleShape2D_oxssa")
+
+[node name="Enemy" type="CharacterBody2D" parent="." node_paths=PackedStringArray("player")]
+collision_layer = 2
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("4_gshsc")
+player = NodePath("../Player")
+
+[node name="Sprite2D" type="Sprite2D" parent="Enemy"]
+scale = Vector2(0.26, 0.26)
+texture = ExtResource("2_q725h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+scale = Vector2(1.84, 1.84)
+shape = SubResource("CircleShape2D_kmxbj")
+
+[node name="Navigation" type="Node2D" parent="Enemy"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Enemy/Navigation"]
+
+[node name="Timer" type="Timer" parent="Enemy/Navigation"]
+wait_time = 0.2
+autostart = true
+
+[node name="Area" type="Node2D" parent="Enemy"]
+
+[node name="Area2D" type="Area2D" parent="Enemy/Area"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Area/Area2D"]
+shape = SubResource("CircleShape2D_0wwgh")
+debug_color = Color(0.823529, 0, 0, 0.419608)
+
+[connection signal="timeout" from="Enemy/Navigation/Timer" to="Enemy" method="_on_timer_timeout"]
+[connection signal="area_entered" from="Enemy/Area/Area2D" to="Enemy" method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Enemy/Area/Area2D" to="Enemy" method="_on_area_2d_area_exited"]
