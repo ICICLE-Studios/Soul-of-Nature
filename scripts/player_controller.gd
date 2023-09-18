@@ -1,10 +1,13 @@
 extends CharacterBody2D
 
 
+signal player_leveled_up(new_player_level : int)
+
 const SPEED = 150.0
 const SPRITE_PATH_BASE = "res://sprites/characters/PlayerSoul/ElementsSoulPlayer%s.png"
 
 @onready var sprite = $Sprite
+@onready var level_label = $LevelLabel
 @onready var attack_group = %Attacks
 
 # Load the corresponding Player Sprites
@@ -17,12 +20,13 @@ const SPRITE_PATH_BASE = "res://sprites/characters/PlayerSoul/ElementsSoulPlayer
 @onready var look_left_sprite = load(SPRITE_PATH_BASE % "7")
 @onready var look_down_left_sprite = load(SPRITE_PATH_BASE % "8")
 
+var current_level = 1
 var player_fireball_scene = preload("res://scenes/attacks/player_fireball.tscn")
 
 
 func _process(delta):
 	if Input.is_action_just_pressed("attack"):
-		attack()
+		_attack()
 
 
 func _physics_process(_delta):
@@ -43,10 +47,17 @@ func _physics_process(_delta):
 	look_at_target_direction()
 
 
-func attack():
+func _level_up():
+	current_level += 1
+	player_leveled_up.emit(current_level)
+	level_label.text = str(current_level)
+
+
+func _attack():
 	var fireball_instance = player_fireball_scene.instantiate()
 	fireball_instance.position = position
 	attack_group.add_child(fireball_instance)
+	fireball_instance.killed_enemy.connect(_level_up)
 
 
 func look_at_target_direction():

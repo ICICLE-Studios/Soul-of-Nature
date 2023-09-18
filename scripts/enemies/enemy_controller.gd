@@ -25,6 +25,10 @@ var detection = null
 var start_position
 
 
+func kill():
+	queue_free()
+
+
 func _ready():
 	start_position = self.global_position
 	nav_agent.path_desired_distance = 4
@@ -39,20 +43,20 @@ func _physics_process(_delta):
 	move_and_slide()
 
 
-func makepath():
+func _make_path():
 	if detection:
 		nav_agent.target_position = player.global_position
 	else:
 		nav_agent.target_position = start_position
 	
-	look_at_target_direction()
+	_look_at_target_direction()
 
 
 func _on_timer_timeout():
-	makepath()
+	_make_path()
 
 
-func look_at_target_direction():
+func _look_at_target_direction():
 	var direction = Vector2(nav_agent.get_next_path_position() - position).normalized()
 	
 	if direction.y < -0.35 and direction.x > 0.35:
@@ -74,7 +78,7 @@ func look_at_target_direction():
 
 
 func _on_area_2d_body_entered(body):
-	if body.get_collision_layer() == 1: 
+	if body.get_collision_layer() == 1:
 		detection = body
 		print("Entra jugador")
 

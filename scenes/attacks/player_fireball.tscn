@@ -6,8 +6,11 @@
 [ext_resource type="AudioStream" uid="uid://dd1r3ste41gw0" path="res://audios/fire-magic.mp3" id="4_8boji"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wvlly"]
+radius = 14.0
 
 [node name="PlayerFireball" type="Area2D"]
+collision_layer = 4
+collision_mask = 3
 input_pickable = false
 script = ExtResource("1_owery")
 
@@ -32,4 +35,5 @@ autostart = true
 stream = ExtResource("4_8boji")
 autoplay = true
 
+[connection signal="body_entered" from="." to="." method="hit_enemy"]
 [connection signal="timeout" from="DestroyTimer" to="." method="_on_destroy_timer_timeout"]

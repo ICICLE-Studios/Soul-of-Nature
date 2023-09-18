@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://brxejphnlvkkt"]
+[gd_scene load_steps=10 format=3 uid="uid://brxejphnlvkkt"]
 
 [ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
 [ext_resource type="Texture2D" uid="uid://bghesvkb3fcbr" path="res://sprites/map/placeholder_ground.png" id="2_317b5"]
@@ -14,6 +14,12 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-256, -256, -256, 256, 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxssa"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_o1vst"]
+font_size = 64
+font_color = Color(1, 1, 0, 1)
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Level" type="Node2D"]
 
@@ -50,6 +56,25 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
 shape = SubResource("CircleShape2D_oxssa")
+
+[node name="LevelLabel" type="Label" parent="Player"]
+z_index = 100
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -14.0
+offset_top = -38.0
+offset_right = 127.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.2, 0.2)
+text = "1"
+label_settings = SubResource("LabelSettings_o1vst")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SoulEnemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_uut6c")]
 player = NodePath("../Player")

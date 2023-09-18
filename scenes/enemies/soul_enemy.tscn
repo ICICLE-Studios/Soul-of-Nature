@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bnvsuvenhnaif" path="res://sprites/characters/EnemySoul/ElementsSoulEnemy1.png" id="2_n86ed"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kmxbj"]
+radius = 20.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0wwgh"]
 radius = 128.0
@@ -15,12 +16,12 @@ outline_color = Color(0, 0, 0, 1)
 
 [node name="SoulEnemy" type="CharacterBody2D"]
 collision_layer = 2
+collision_mask = 3
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_vltg6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1.84, 1.84)
 shape = SubResource("CircleShape2D_kmxbj")
 
 [node name="Navigation" type="Node2D" parent="."]
@@ -45,6 +46,7 @@ scale = Vector2(0.15, 0.15)
 texture = ExtResource("2_n86ed")
 
 [node name="LevelLabel" type="Label" parent="."]
+z_index = 100
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
