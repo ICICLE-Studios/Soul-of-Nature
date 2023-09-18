@@ -10,7 +10,7 @@ radius = 128.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_0gt4p"]
 font_size = 64
-outline_size = 3
+outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
 [node name="SoulEnemy" type="CharacterBody2D"]
@@ -57,7 +57,7 @@ offset_bottom = 53.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.2, 0.2)
-text = "Lvl 1"
+text = "1"
 label_settings = SubResource("LabelSettings_0gt4p")
 horizontal_alignment = 1
 vertical_alignment = 1
