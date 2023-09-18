@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=3 uid="uid://08qf6t8vh2oh"]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_vltg6"]
+[ext_resource type="Texture2D" uid="uid://bnvsuvenhnaif" path="res://sprites/characters/EnemySoul/ElementsSoulEnemy1.png" id="2_n86ed"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kmxbj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0wwgh"]
+radius = 128.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_0gt4p"]
+font_size = 64
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="SoulEnemy" type="CharacterBody2D"]
+collision_layer = 2
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_vltg6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1.84, 1.84)
+shape = SubResource("CircleShape2D_kmxbj")
+
+[node name="Navigation" type="Node2D" parent="."]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Navigation"]
+
+[node name="Timer" type="Timer" parent="Navigation"]
+wait_time = 0.2
+autostart = true
+
+[node name="Area" type="Node2D" parent="."]
+
+[node name="DetectionPlayer" type="Area2D" parent="Area"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area/DetectionPlayer"]
+shape = SubResource("CircleShape2D_0wwgh")
+debug_color = Color(0.823529, 0, 0, 0.419608)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_n86ed")
+
+[node name="LevelLabel" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -14.0
+offset_top = -38.0
+offset_right = 127.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.2, 0.2)
+text = "Lvl 1"
+label_settings = SubResource("LabelSettings_0gt4p")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="timeout" from="Navigation/Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area/DetectionPlayer" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area/DetectionPlayer" to="." method="_on_area_2d_body_exited"]

@@ -4,7 +4,7 @@ extends CharacterBody2D
 const SPEED = 50.0
 const SPRITE_PATH_BASE = "res://sprites/characters/%s/%s%s.png"
 
-@export var player: Node2D
+@export var player: CharacterBody2D
 @export var enemy_folder_name : String = "EnemySoul"
 @export var enemy_file_name : String = "ElementsSoulEnemy"
 
