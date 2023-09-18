@@ -34,12 +34,12 @@ func _ready():
 	nav_agent.path_desired_distance = 4
 	nav_agent.target_desired_distance = 4
 	sprite.texture = look_down_sprite
-	pass
+	$Sprite/AnimationPlayer.play("player_idle")
 
 
 func _physics_process(_delta):
 	var dir = to_local(nav_agent.get_next_path_position()).normalized() 
-	velocity = dir * SPEED
+	velocity = dir * SPEED if detection else Vector2(0, 0)
 	move_and_slide()
 
 
@@ -47,7 +47,7 @@ func _make_path():
 	if detection:
 		nav_agent.target_position = player.global_position
 	else:
-		nav_agent.target_position = start_position
+		nav_agent.target_position = position
 	
 	_look_at_target_direction()
 

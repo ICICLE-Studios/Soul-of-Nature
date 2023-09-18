@@ -1,6 +1,13 @@
 extends CharacterBody2D
 
+enum Element {
+	WATER,
+	FIRE,
+	PLANT,
+	ELECTRIC
+}
 
+signal player_changed_element(new_element : Element)
 signal player_leveled_up(new_player_level : int)
 
 const SPEED = 150.0
@@ -20,11 +27,20 @@ const SPRITE_PATH_BASE = "res://sprites/characters/PlayerSoul/ElementsSoulPlayer
 @onready var look_left_sprite = load(SPRITE_PATH_BASE % "7")
 @onready var look_down_left_sprite = load(SPRITE_PATH_BASE % "8")
 
+var selected_element : Element = Element.PLANT
 var current_level = 1
 var player_fireball_scene = preload("res://scenes/attacks/player_fireball.tscn")
+var player_plant_scene = preload("res://scenes/attacks/player_plant.tscn")
+
+
+func _ready():
+	$Sprite/AnimationPlayer.play("player_idle")
 
 
 func _process(delta):
+	if Input.is_action_just_pressed("next_player_element"):
+		_switch_to_next_element()
+	
 	if Input.is_action_just_pressed("attack"):
 		_attack()
 
@@ -53,11 +69,52 @@ func _level_up():
 	level_label.text = str(current_level)
 
 
+func _switch_to_next_element():
+	if selected_element == Element.WATER:
+		selected_element = Element.FIRE
+	elif selected_element == Element.FIRE:
+		selected_element = Element.PLANT
+	elif selected_element == Element.PLANT:
+		selected_element = Element.ELECTRIC
+	else:
+		selected_element = Element.WATER
+	
+	player_changed_element.emit(selected_element)
+
+
 func _attack():
+	
+	if selected_element == Element.WATER:
+		_fire_attack()
+	elif selected_element == Element.FIRE:
+		_fire_attack()
+	elif selected_element == Element.PLANT:
+		_plant_attack()
+	elif selected_element == Element.ELECTRIC:
+		_fire_attack()
+
+
+func _fire_attack():
 	var fireball_instance = player_fireball_scene.instantiate()
 	fireball_instance.position = position
 	attack_group.add_child(fireball_instance)
 	fireball_instance.killed_enemy.connect(_level_up)
+
+
+func _plant_attack():
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(position, get_global_mouse_position())
+	var result = space_state.intersect_ray(query)
+	
+	var target_attack_location = get_global_mouse_position()
+	
+	if result:
+		target_attack_location = result.position
+	
+	var plant_instance = player_plant_scene.instantiate()
+	plant_instance.position = target_attack_location
+	attack_group.add_child(plant_instance)
+	plant_instance.killed_enemy.connect(_level_up)
 
 
 func look_at_target_direction():
