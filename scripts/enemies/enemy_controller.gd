@@ -1,15 +1,17 @@
 extends CharacterBody2D
 
-
 const SPEED = 50.0
 const SPRITE_PATH_BASE = "res://sprites/characters/%s/%s%s.png"
 
-@export var player: CharacterBody2D
 @export var enemy_folder_name : String = "EnemySoul"
 @export var enemy_file_name : String = "ElementsSoulEnemy"
 
 @onready var nav_agent = $Navigation/NavigationAgent2D
 @onready var sprite = $Sprite
+@onready var level_label = $LevelLabel
+
+static var _enemy_general_level = 0;
+@onready var _enemy_level = _enemy_general_level
 
 # Load the corresponding Enemy Sprites
 @onready var look_down_sprite = load(SPRITE_PATH_BASE % [enemy_folder_name, enemy_file_name, "1"])
@@ -24,16 +26,17 @@ const SPRITE_PATH_BASE = "res://sprites/characters/%s/%s%s.png"
 var detection = null
 var start_position
 
-
 func kill():
+	detection = null
+	_enemy_general_level+=1
 	queue_free()
-
 
 func _ready():
 	start_position = self.global_position
 	nav_agent.path_desired_distance = 4
 	nav_agent.target_desired_distance = 4
 	sprite.texture = look_down_sprite
+	level_label.text = str(_enemy_level)
 	$Sprite/AnimationPlayer.play("player_idle")
 
 
@@ -44,13 +47,13 @@ func _physics_process(_delta):
 
 
 func _make_path():
+	print(detection)
 	if detection:
-		nav_agent.target_position = player.global_position
+		nav_agent.target_position = detection.global_position
 	else:
 		nav_agent.target_position = position
 	
 	_look_at_target_direction()
-
 
 func _on_timer_timeout():
 	_make_path()

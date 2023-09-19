@@ -33,6 +33,7 @@ var player_fireball_scene = preload("res://scenes/attacks/player_fireball.tscn")
 var player_plant_scene = preload("res://scenes/attacks/player_plant.tscn")
 
 
+
 func _ready():
 	$Sprite/AnimationPlayer.play("player_idle")
 
@@ -43,7 +44,12 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("attack"):
 		_attack()
-
+		
+	if Input.is_action_just_pressed("spawn_enemy"):
+			var enemy = load("res://scenes/enemies/soul_enemy.tscn")
+			var instance = enemy.instantiate()
+			%Enemies.add_child(instance)
+			print("hey yo")
 
 func _physics_process(_delta):
 	var horizontalInput = Input.get_axis("ui_left", "ui_right")

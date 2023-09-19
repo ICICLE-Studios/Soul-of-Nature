@@ -152,8 +152,8 @@ region_rect = Rect2(0, 0, 64, 64)
 unique_name_in_owner = true
 
 [node name="SoulEnemy" parent="Enemies" instance=ExtResource("4_uut6c")]
-enemy_folder_name = "EnemySoul"
-enemy_file_name = "ElementsSoulEnemy"
+enemy_folder_name = null
+enemy_file_name = null
 
 [node name="Attacks" type="Node2D" parent="."]
 unique_name_in_owner = true
