@@ -11,12 +11,34 @@
 [ext_resource type="Texture2D" uid="uid://hcb1mnvqicr8" path="res://sprites/characters/EnemyPlant/ElementsPlant1.png" id="9_y66vn"]
 [ext_resource type="Texture2D" uid="uid://5d8i47pbtb0p" path="res://sprites/characters/EnemyElectricity/ElementsElectricity1.png" id="10_72lfl"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
-vertices = PackedVector2Array(256, -256, 256, 256, -256, 256, -256, -256)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-256, -256, -256, 256, 256, 256, 256, -256)])
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
+
+[sub_resource type="Animation" id="Animation_mmgj0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.15, 0.15)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_uttox"]
 resource_name = "player_idle"
@@ -46,33 +68,6 @@ tracks/1/keys = {
 "values": [Vector2(0, 0), Vector2(0, -1.855), Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_mmgj0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.15, 0.15)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c4lk8"]
 _data = {
 "RESET": SubResource("Animation_mmgj0"),
@@ -87,21 +82,12 @@ font_color = Color(1, 1, 0, 1)
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
+vertices = PackedVector2Array(256, -256, 256, 256, -256, 256, -256, -256)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-256, -256, -256, 256, 256, 256, 256, -256)])
+
 [node name="Level" type="Node2D"]
-
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-navigation_polygon = SubResource("NavigationPolygon_5vf1p")
-
-[node name="Map" type="Node2D" parent="."]
-
-[node name="GroundSprite" type="Sprite2D" parent="Map"]
-z_index = -1
-texture_filter = 1
-texture_repeat = 2
-scale = Vector2(64, 64)
-texture = ExtResource("2_317b5")
-region_enabled = true
-region_rect = Rect2(0, 0, 64, 64)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
@@ -147,8 +133,26 @@ label_settings = SubResource("LabelSettings_o1vst")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SoulEnemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_uut6c")]
-player = NodePath("../Player")
+[node name="Map" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="Map"]
+navigation_polygon = SubResource("NavigationPolygon_5vf1p")
+
+[node name="GroundSprite" type="Sprite2D" parent="Map"]
+z_index = -1
+texture_filter = 1
+texture_repeat = 2
+scale = Vector2(64, 64)
+texture = ExtResource("2_317b5")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="Enemies" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="SoulEnemy" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("4_uut6c")]
+player = NodePath("../../Player")
 
 [node name="Attacks" type="Node2D" parent="."]
 unique_name_in_owner = true
