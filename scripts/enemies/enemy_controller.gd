@@ -1,17 +1,25 @@
 extends CharacterBody2D
 
+
+const GAME_ELEMENT = preload("res://scripts/game_element.gd").GameElement
 const SPEED = 50.0
 const SPRITE_PATH_BASE = "res://sprites/characters/%s/%s%s.png"
 
+static var _enemy_general_level = 0
+
+## The Element of this Enemy.
+@export var enemy_element : GAME_ELEMENT
+
+## The name of the folder found in [code]res://sprites/characters/[/code] that points to this Enemy's sprites.
 @export var enemy_folder_name : String = "EnemySoul"
+
+## The base name for all sprites found in its sprite folder.
 @export var enemy_file_name : String = "ElementsSoulEnemy"
 
+@onready var _enemy_level = _enemy_general_level
 @onready var nav_agent = $Navigation/NavigationAgent2D
 @onready var sprite = $Sprite
 @onready var level_label = $LevelLabel
-
-static var _enemy_general_level = 0;
-@onready var _enemy_level = _enemy_general_level
 
 # Load the corresponding Enemy Sprites
 @onready var look_down_sprite = load(SPRITE_PATH_BASE % [enemy_folder_name, enemy_file_name, "1"])
@@ -23,13 +31,48 @@ static var _enemy_general_level = 0;
 @onready var look_left_sprite = load(SPRITE_PATH_BASE % [enemy_folder_name, enemy_file_name, "7"])
 @onready var look_down_left_sprite = load(SPRITE_PATH_BASE % [enemy_folder_name, enemy_file_name, "8"])
 
-var detection = null
+var player : CharacterBody2D
+var detection
 var start_position
 
-func kill():
+
+## Call this method whenever a Player Attack affects this Enemy.
+func touched_by_player_attack(attack_element : GAME_ELEMENT) -> void:
+	if _can_be_defeated_by_element(attack_element):
+		be_defeated()
+
+
+## Returns [code]true[/code] if the passed GameElement counters this Enemy's Element. [code](item_element)[/code]
+func _can_be_defeated_by_element(element : GAME_ELEMENT) -> bool:
+	
+	# If this Enemy's Element is of Neutral type, be defeated by any Element.
+	if enemy_element == GAME_ELEMENT.NEUTRAL:
+		return true
+	elif element == GAME_ELEMENT.WATER:
+		return enemy_element == GAME_ELEMENT.FIRE
+	elif element == GAME_ELEMENT.FIRE:
+		return enemy_element == GAME_ELEMENT.PLANT
+	elif element == GAME_ELEMENT.PLANT:
+		return enemy_element == GAME_ELEMENT.ELECTRIC
+	elif element == GAME_ELEMENT.ELECTRIC:
+		return enemy_element == GAME_ELEMENT.WATER
+		
+	return false
+
+
+## Destroys this Enemy and increases the general enemy level.
+func be_defeated() -> void:
 	detection = null
-	_enemy_general_level+=1
+	_enemy_general_level += 1
+	
+	if player == null:
+		player = %Player
+	
+	if player != null:
+		player._level_up_element(enemy_element, 1)
+	
 	queue_free()
+
 
 func _ready():
 	start_position = self.global_position
@@ -54,6 +97,7 @@ func _make_path():
 		nav_agent.target_position = position
 	
 	_look_at_target_direction()
+
 
 func _on_timer_timeout():
 	_make_path()

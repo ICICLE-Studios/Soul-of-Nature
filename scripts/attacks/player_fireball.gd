@@ -1,22 +1,22 @@
-class_name PlayerFireball
 extends Area2D
 
 
 signal killed_enemy()
 
+const GAME_ELEMENT = preload("res://scripts/game_element.gd").GameElement
 const SPEED = 300.0
 
-var motion_direction : Vector2
+var _motion_direction : Vector2
 
 
 func _ready():
-	motion_direction = get_local_mouse_position().normalized()
-	if motion_direction.is_zero_approx():
-		motion_direction = Vector2(1.0, 0.0)
+	_motion_direction = get_local_mouse_position().normalized()
+	if _motion_direction.is_zero_approx():
+		_motion_direction = Vector2(1.0, 0.0)
 
 
 func _physics_process(delta):
-	position += motion_direction * SPEED * delta
+	position += _motion_direction * SPEED * delta
 
 
 func _on_destroy_timer_timeout():
@@ -24,8 +24,9 @@ func _on_destroy_timer_timeout():
 
 
 func hit_enemy(body):
-	
-	if body.get_collision_layer() == 2:
-		body.kill()
-		killed_enemy.emit()
-		queue_free()
+	# Not an Enemy? Ignore.
+	if not body.get_collision_layer_value(2):
+		return
+		
+	body.touched_by_player_attack(GAME_ELEMENT.FIRE)
+	queue_free()

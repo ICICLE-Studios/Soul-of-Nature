@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://brxejphnlvkkt"]
+[gd_scene load_steps=27 format=3 uid="uid://brxejphnlvkkt"]
 
 [ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
 [ext_resource type="Texture2D" uid="uid://bghesvkb3fcbr" path="res://sprites/map/placeholder_ground.png" id="2_317b5"]
@@ -13,6 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://hcb1mnvqicr8" path="res://sprites/characters/EnemyPlant/ElementsPlant1.png" id="9_y66vn"]
 [ext_resource type="Texture2D" uid="uid://5d8i47pbtb0p" path="res://sprites/characters/EnemyElectricity/ElementsElectricity1.png" id="10_72lfl"]
 [ext_resource type="Texture2D" uid="uid://t20j8fn3pqcq" path="res://sprites/items/Item_Fire.png" id="11_y1www"]
+[ext_resource type="AudioStream" uid="uid://baepyd2x2kkj7" path="res://audios/change_element_to_fire.ogg" id="14_8i4p8"]
+[ext_resource type="AudioStream" uid="uid://dpsbpj7jywq33" path="res://audios/change_element_to_plant.ogg" id="15_jryyq"]
+[ext_resource type="AudioStream" uid="uid://dnoko8nxi8pgo" path="res://audios/change_element_to_thunder.ogg" id="16_tpr0u"]
+[ext_resource type="AudioStream" uid="uid://dmw3dd4pfw67i" path="res://audios/change_element_to_water.ogg" id="17_58roi"]
+[ext_resource type="Script" path="res://scripts/element_level_label.gd" id="18_posy2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
 
@@ -79,12 +84,6 @@ _data = {
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxssa"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_o1vst"]
-font_size = 64
-font_color = Color(1, 1, 0, 1)
-outline_size = 20
-outline_color = Color(0, 0, 0, 1)
-
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
 vertices = PackedVector2Array(256, -256, 256, 256, -256, 256, -256, -256)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
@@ -92,6 +91,12 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-256, -256, -256, 256, 
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bgd8u"]
 radius = 20.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_kbcjx"]
+font_size = 128
+font_color = Color(1, 1, 0, 1)
+outline_size = 24
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Level" type="Node2D"]
 
@@ -120,25 +125,6 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
 shape = SubResource("CircleShape2D_oxssa")
 
-[node name="LevelLabel" type="Label" parent="Player"]
-z_index = 100
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -14.0
-offset_top = -38.0
-offset_right = 127.0
-offset_bottom = 53.0
-grow_horizontal = 2
-grow_vertical = 0
-scale = Vector2(0.2, 0.2)
-text = "1"
-label_settings = SubResource("LabelSettings_o1vst")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Map" type="Node2D" parent="."]
 unique_name_in_owner = true
 
@@ -159,8 +145,9 @@ unique_name_in_owner = true
 
 [node name="FireWorldItem" type="StaticBody2D" parent="Items"]
 position = Vector2(560, 0)
-collision_layer = 2
+collision_layer = 3
 script = ExtResource("4_nlnds")
+item_element = 2
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Items/FireWorldItem"]
 shape = SubResource("CircleShape2D_bgd8u")
@@ -180,8 +167,6 @@ texture = ExtResource("11_y1www")
 unique_name_in_owner = true
 
 [node name="SoulEnemy" parent="Enemies" instance=ExtResource("4_uut6c")]
-enemy_folder_name = "EnemySoul"
-enemy_file_name = "ElementsSoulEnemy"
 
 [node name="Attacks" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -199,3 +184,83 @@ water_icon = ExtResource("8_ylhh0")
 fire_icon = ExtResource("6_d5lng")
 plant_icon = ExtResource("9_y66vn")
 electric_icon = ExtResource("10_72lfl")
+
+[node name="ChangeToFireAudio" type="AudioStreamPlayer" parent="PlayerCamera/CurrentElement"]
+stream = ExtResource("14_8i4p8")
+volume_db = -6.0
+
+[node name="ChangeToPlantAudio" type="AudioStreamPlayer" parent="PlayerCamera/CurrentElement"]
+stream = ExtResource("15_jryyq")
+volume_db = -6.0
+
+[node name="ChangeToThunderAudio" type="AudioStreamPlayer" parent="PlayerCamera/CurrentElement"]
+stream = ExtResource("16_tpr0u")
+volume_db = -6.0
+
+[node name="ChangeToWaterAudio" type="AudioStreamPlayer" parent="PlayerCamera/CurrentElement"]
+stream = ExtResource("17_58roi")
+volume_db = -6.0
+
+[node name="WaterElementLevelIcon" type="Sprite2D" parent="PlayerCamera"]
+position = Vector2(-433, -138)
+scale = Vector2(0.196429, 0.196429)
+texture = ExtResource("8_ylhh0")
+
+[node name="WaterLevelLabel" type="Label" parent="PlayerCamera/WaterElementLevelIcon"]
+offset_left = 239.273
+offset_top = -96.7272
+offset_right = 692.273
+offset_bottom = 111.273
+text = "1"
+label_settings = SubResource("LabelSettings_kbcjx")
+vertical_alignment = 1
+script = ExtResource("18_posy2")
+target_element = 1
+
+[node name="FireElementLevelIcon" type="Sprite2D" parent="PlayerCamera"]
+position = Vector2(-433, -69)
+scale = Vector2(0.196429, 0.196429)
+texture = ExtResource("6_d5lng")
+
+[node name="FireLevelLabel" type="Label" parent="PlayerCamera/FireElementLevelIcon"]
+offset_left = 239.273
+offset_top = -96.7272
+offset_right = 692.273
+offset_bottom = 111.273
+text = "1"
+label_settings = SubResource("LabelSettings_kbcjx")
+vertical_alignment = 1
+script = ExtResource("18_posy2")
+target_element = 2
+
+[node name="PlantElementLevelIcon" type="Sprite2D" parent="PlayerCamera"]
+position = Vector2(-433, 0)
+scale = Vector2(0.196429, 0.196429)
+texture = ExtResource("9_y66vn")
+
+[node name="PlantLevelLabel" type="Label" parent="PlayerCamera/PlantElementLevelIcon"]
+offset_left = 239.273
+offset_top = -96.7272
+offset_right = 692.273
+offset_bottom = 111.273
+text = "1"
+label_settings = SubResource("LabelSettings_kbcjx")
+vertical_alignment = 1
+script = ExtResource("18_posy2")
+target_element = 3
+
+[node name="ElectricElementLevelIcon" type="Sprite2D" parent="PlayerCamera"]
+position = Vector2(-432, 69)
+scale = Vector2(0.196429, 0.196429)
+texture = ExtResource("10_72lfl")
+
+[node name="ElectricLevelLabel" type="Label" parent="PlayerCamera/ElectricElementLevelIcon"]
+offset_left = 239.273
+offset_top = -96.7272
+offset_right = 692.273
+offset_bottom = 111.273
+text = "1"
+label_settings = SubResource("LabelSettings_kbcjx")
+vertical_alignment = 1
+script = ExtResource("18_posy2")
+target_element = 4

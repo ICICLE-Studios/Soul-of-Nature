@@ -1,20 +1,18 @@
+class_name PlayerController
 extends CharacterBody2D
 
-enum Element {
-	WATER,
-	FIRE,
-	PLANT,
-	ELECTRIC
-}
 
-signal player_changed_element(new_element : Element)
-signal player_leveled_up(new_player_level : int)
+const GAME_ELEMENT = preload("res://scripts/game_element.gd").GameElement
+
+signal player_changed_element(new_element : GAME_ELEMENT)
+signal player_leveled_up_element(element : GAME_ELEMENT, level : int) #TODO: USAME XD
 
 const SPEED = 150.0
 const SPRITE_PATH_BASE = "res://sprites/characters/PlayerSoul/ElementsSoulPlayer%s.png"
+const PLAYER_FIREBALL_SCENE = preload("res://scenes/attacks/player_fireball.tscn")
+const PLAYER_PLANT_SCENE = preload("res://scenes/attacks/player_plant.tscn")
 
 @onready var sprite = $Sprite
-@onready var level_label = $LevelLabel
 @onready var attack_group = %Attacks
 
 # Load the corresponding Player Sprites
@@ -27,11 +25,24 @@ const SPRITE_PATH_BASE = "res://sprites/characters/PlayerSoul/ElementsSoulPlayer
 @onready var look_left_sprite = load(SPRITE_PATH_BASE % "7")
 @onready var look_down_left_sprite = load(SPRITE_PATH_BASE % "8")
 
-var selected_element : Element = Element.PLANT
-var current_level = 1
-var player_fireball_scene = preload("res://scenes/attacks/player_fireball.tscn")
-var player_plant_scene = preload("res://scenes/attacks/player_plant.tscn")
+var selected_element = GAME_ELEMENT.FIRE
+var current_element_roulette_index = 0
 
+var current_water_level = 1
+var current_fire_level = 1
+var current_plant_level = 1
+var current_electric_level = 1
+
+const ELEMENT_ROULETTE = [
+	GAME_ELEMENT.WATER,
+	GAME_ELEMENT.FIRE,
+	GAME_ELEMENT.PLANT,
+	GAME_ELEMENT.ELECTRIC
+]
+
+
+func defeated_enemy():
+	print_debug("Defeated Enemy!")
 
 
 func _ready():
@@ -46,10 +57,11 @@ func _process(delta):
 		_attack()
 		
 	if Input.is_action_just_pressed("spawn_enemy"):
-			var enemy = load("res://scenes/enemies/soul_enemy.tscn")
-			var instance = enemy.instantiate()
-			%Enemies.add_child(instance)
-			print("hey yo")
+		var enemy = load("res://scenes/enemies/soul_enemy.tscn")
+		var instance = enemy.instantiate()
+		%Enemies.add_child(instance)
+		instance.player = %Player
+		print("hey yo")
 
 func _physics_process(_delta):
 	var horizontalInput = Input.get_axis("ui_left", "ui_right")
@@ -69,58 +81,64 @@ func _physics_process(_delta):
 	look_at_target_direction()
 
 
-func _level_up():
-	current_level += 1
-	player_leveled_up.emit(current_level)
-	level_label.text = str(current_level)
+func _level_up_element(element : GAME_ELEMENT, quantity : int) -> void:
+	if element == GAME_ELEMENT.NEUTRAL:
+		return
+	
+	if element == GAME_ELEMENT.WATER:
+		current_water_level += 1
+		player_leveled_up_element.emit(element, current_water_level)
+	elif element == GAME_ELEMENT.FIRE:
+		current_fire_level += 1
+		player_leveled_up_element.emit(element, current_fire_level)
+	elif element == GAME_ELEMENT.PLANT:
+		current_plant_level += 1
+		player_leveled_up_element.emit(element, current_plant_level)
+	elif element == GAME_ELEMENT.ELECTRIC:
+		current_electric_level += 1
+		player_leveled_up_element.emit(element, current_electric_level)
 
 
 func _switch_to_next_element():
-	if selected_element == Element.WATER:
-		selected_element = Element.FIRE
-	elif selected_element == Element.FIRE:
-		selected_element = Element.PLANT
-	elif selected_element == Element.PLANT:
-		selected_element = Element.ELECTRIC
-	else:
-		selected_element = Element.WATER
+	current_element_roulette_index += 1
 	
+	if current_element_roulette_index >= ELEMENT_ROULETTE.size():
+		current_element_roulette_index = 0
+	
+	selected_element = ELEMENT_ROULETTE[current_element_roulette_index]
 	player_changed_element.emit(selected_element)
 
 
 func _attack():
 	
-	if selected_element == Element.WATER:
+	if selected_element == GAME_ELEMENT.WATER:
 		_fire_attack()
-	elif selected_element == Element.FIRE:
+	elif selected_element == GAME_ELEMENT.FIRE:
 		_fire_attack()
-	elif selected_element == Element.PLANT:
+	elif selected_element == GAME_ELEMENT.PLANT:
 		_plant_attack()
-	elif selected_element == Element.ELECTRIC:
+	elif selected_element == GAME_ELEMENT.ELECTRIC:
 		_fire_attack()
 
 
 func _fire_attack():
-	var fireball_instance = player_fireball_scene.instantiate()
+	var fireball_instance = PLAYER_FIREBALL_SCENE.instantiate()
 	fireball_instance.position = position
 	attack_group.add_child(fireball_instance)
-	fireball_instance.killed_enemy.connect(_level_up)
 
 
 func _plant_attack():
 	var space_state = get_world_2d().direct_space_state
 	var query = PhysicsRayQueryParameters2D.create(position, get_global_mouse_position())
 	var result = space_state.intersect_ray(query)
-	
 	var target_attack_location = get_global_mouse_position()
 	
 	if result:
 		target_attack_location = result.position
 	
-	var plant_instance = player_plant_scene.instantiate()
+	var plant_instance = PLAYER_PLANT_SCENE.instantiate()
 	plant_instance.position = target_attack_location
 	attack_group.add_child(plant_instance)
-	plant_instance.killed_enemy.connect(_level_up)
 
 
 func look_at_target_direction():
