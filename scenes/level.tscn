@@ -89,8 +89,6 @@ _data = {
 "player_idle": SubResource("Animation_uttox")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_oxssa"]
-
 [sub_resource type="Gradient" id="Gradient_361pj"]
 offsets = PackedFloat32Array(0, 0.145679, 0.659259, 1)
 colors = PackedColorArray(0.986546, 0.986546, 0.986546, 0.123188, 1, 1, 1, 1, 0.890785, 0.890785, 0.890785, 1, 1, 1, 1, 0)
@@ -114,6 +112,8 @@ angle_max = 45.0
 scale_max = 3.0
 color_ramp = SubResource("GradientTexture1D_vo862")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_oxssa"]
+
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
 vertices = PackedVector2Array(2048, -2048, 2048, 2048, -2048, 2048, -2048, -2048)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
@@ -127,6 +127,8 @@ outline_color = Color(0, 0, 0, 1)
 
 [node name="Level" type="Node2D"]
 y_sort_enabled = true
+
+[node name="Managers" type="Node2D" parent="."]
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
@@ -158,6 +160,10 @@ libraries = {
 "": SubResource("AnimationLibrary_c4lk8")
 }
 
+[node name="Particles" type="GPUParticles2D" parent="Player"]
+position = Vector2(0, 5)
+process_material = SubResource("ParticleProcessMaterial_7v765")
+
 [node name="Area2D" type="Area2D" parent="Player"]
 collision_mask = 0
 
@@ -181,10 +187,6 @@ one_shot = true
 [node name="ElectricAttackCooldown" type="Timer" parent="Player/AttackCooldowns"]
 wait_time = 0.5
 one_shot = true
-
-[node name="Particles" type="GPUParticles2D" parent="Player"]
-position = Vector2(0, 5)
-process_material = SubResource("ParticleProcessMaterial_7v765")
 
 [node name="Map" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -336,3 +338,29 @@ label_settings = SubResource("LabelSettings_kbcjx")
 vertical_alignment = 1
 script = ExtResource("18_posy2")
 target_element = 4
+
+[node name="UI" type="Control" parent="PlayerCamera"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -270.0
+offset_right = 480.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseMenu" type="MarginContainer" parent="PlayerCamera/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="PlayerCamera/UI/PauseMenu"]
+layout_mode = 2
+color = Color(0.12549, 0.12549, 0.0941176, 0.705882)
