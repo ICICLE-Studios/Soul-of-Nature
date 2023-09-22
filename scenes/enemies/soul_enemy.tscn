@@ -96,6 +96,7 @@ autostart = true
 [node name="Area" type="Node2D" parent="."]
 
 [node name="DetectionPlayer" type="Area2D" parent="Area"]
+visible = false
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area/DetectionPlayer"]

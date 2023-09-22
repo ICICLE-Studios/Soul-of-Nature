@@ -4,15 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://bghesvkb3fcbr" path="res://sprites/map/placeholder_ground.png" id="2_317b5"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vpdyx"]
 [ext_resource type="Texture2D" uid="uid://dq6wa0dy4244q" path="res://sprites/characters/PlayerSoul/ElementsSoulPlayer1.png" id="3_svjcw"]
-[ext_resource type="Texture2D" uid="uid://brjq2uai8afjx" path="res://sprites/circle_gradient.png" id="4_1o1id"]
-[ext_resource type="Script" path="res://scripts/world_item.gd" id="4_nlnds"]
+[ext_resource type="PackedScene" uid="uid://d0gc7xhpjufm" path="res://scenes/world_items/fire_world_item.tscn" id="4_fgst1"]
 [ext_resource type="PackedScene" uid="uid://08qf6t8vh2oh" path="res://scenes/enemies/soul_enemy.tscn" id="4_uut6c"]
+[ext_resource type="PackedScene" uid="uid://dal4567l588mg" path="res://scenes/world_items/water_world_item.tscn" id="5_3q2sm"]
+[ext_resource type="PackedScene" uid="uid://uofy45yummxg" path="res://scenes/world_items/plant_world_item.tscn" id="6_1idww"]
 [ext_resource type="Texture2D" uid="uid://c3hopi0a0jngt" path="res://sprites/characters/EnemyFire/ElementsFire1.png" id="6_d5lng"]
 [ext_resource type="Script" path="res://scripts/current_element_display.gd" id="7_5wpqg"]
+[ext_resource type="PackedScene" uid="uid://ditldg6j00rxu" path="res://scenes/world_items/electric_world_item.tscn" id="7_8nao5"]
 [ext_resource type="Texture2D" uid="uid://dackuy4f8bo2m" path="res://sprites/characters/EnemyWater/ElementsWater1.png" id="8_ylhh0"]
 [ext_resource type="Texture2D" uid="uid://hcb1mnvqicr8" path="res://sprites/characters/EnemyPlant/ElementsPlant1.png" id="9_y66vn"]
 [ext_resource type="Texture2D" uid="uid://5d8i47pbtb0p" path="res://sprites/characters/EnemyElectricity/ElementsElectricity1.png" id="10_72lfl"]
-[ext_resource type="Texture2D" uid="uid://t20j8fn3pqcq" path="res://sprites/items/Item_Fire.png" id="11_y1www"]
 [ext_resource type="AudioStream" uid="uid://baepyd2x2kkj7" path="res://audios/change_element_to_fire.ogg" id="14_8i4p8"]
 [ext_resource type="AudioStream" uid="uid://dpsbpj7jywq33" path="res://audios/change_element_to_plant.ogg" id="15_jryyq"]
 [ext_resource type="AudioStream" uid="uid://dnoko8nxi8pgo" path="res://audios/change_element_to_thunder.ogg" id="16_tpr0u"]
@@ -85,12 +86,9 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxssa"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
-vertices = PackedVector2Array(256, -256, 256, 256, -256, 256, -256, -256)
+vertices = PackedVector2Array(2048, -2048, 2048, 2048, -2048, 2048, -2048, -2048)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-256, -256, -256, 256, 256, 256, 256, -256)])
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_bgd8u"]
-radius = 20.0
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2048, -2048, -2048, 2048, 2048, 2048, 2048, -2048)])
 
 [sub_resource type="LabelSettings" id="LabelSettings_kbcjx"]
 font_size = 128
@@ -102,7 +100,6 @@ outline_color = Color(0, 0, 0, 1)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(100, 100)
 motion_mode = 1
 platform_on_leave = 2
 script = ExtResource("2_vpdyx")
@@ -147,6 +144,7 @@ one_shot = true
 unique_name_in_owner = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="Map"]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_5vf1p")
 
 [node name="GroundSprite" type="Sprite2D" parent="Map"]
@@ -161,30 +159,23 @@ region_rect = Rect2(0, 0, 64, 64)
 [node name="Items" type="Node2D" parent="."]
 unique_name_in_owner = true
 
-[node name="FireWorldItem" type="StaticBody2D" parent="Items"]
-position = Vector2(560, 0)
-collision_layer = 3
-script = ExtResource("4_nlnds")
-item_element = 2
+[node name="FireWorldItem" parent="Items" instance=ExtResource("4_fgst1")]
+position = Vector2(288, -32)
 
-[node name="CollisionShape" type="CollisionShape2D" parent="Items/FireWorldItem"]
-shape = SubResource("CircleShape2D_bgd8u")
+[node name="WaterWorldItem" parent="Items" instance=ExtResource("5_3q2sm")]
+position = Vector2(352, 32)
 
-[node name="Halo" type="Sprite2D" parent="Items/FireWorldItem"]
-modulate = Color(0.996094, 0.496094, 0, 1)
-position = Vector2(0, -28)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("4_1o1id")
+[node name="PlantWorldItem" parent="Items" instance=ExtResource("6_1idww")]
+position = Vector2(288, 96)
 
-[node name="Sprite" type="Sprite2D" parent="Items/FireWorldItem"]
-position = Vector2(0, -14)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("11_y1www")
+[node name="ElectricWorldItem" parent="Items" instance=ExtResource("7_8nao5")]
+position = Vector2(224, -96)
 
 [node name="Enemies" type="Node2D" parent="."]
 unique_name_in_owner = true
 
 [node name="SoulEnemy" parent="Enemies" instance=ExtResource("4_uut6c")]
+position = Vector2(-160, -160)
 
 [node name="Attacks" type="Node2D" parent="."]
 unique_name_in_owner = true

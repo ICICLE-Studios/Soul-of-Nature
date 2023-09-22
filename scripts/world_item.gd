@@ -18,6 +18,15 @@ func touched_by_player_attack(attack_element : GAME_ELEMENT) -> void:
 		be_defeated()
 
 
+## Destroys this World Item.
+func be_defeated() -> void:
+	%Player._level_up_element(item_element, 1)
+	queue_free()
+
+
+func _ready():
+	$Sprite/AnimationPlayer.play("world_item_idle")
+
 ## Returns [code]true[/code] if the passed GameElement counters this World Item's Element. [code](item_element)[/code]
 func _can_be_defeated_by_element(element : GAME_ELEMENT) -> bool:
 	# If this World item's Element is of Neutral type, be defeated by any Element.
@@ -33,9 +42,3 @@ func _can_be_defeated_by_element(element : GAME_ELEMENT) -> bool:
 		return item_element == GAME_ELEMENT.WATER
 		
 	return false
-
-
-## Destroys this World Item.
-func be_defeated() -> void:
-	%Player._level_up_element(item_element, 1)
-	queue_free()

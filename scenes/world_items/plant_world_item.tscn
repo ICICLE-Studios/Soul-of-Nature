@@ -1,0 +1,82 @@
+[gd_scene load_steps=7 format=3 uid="uid://uofy45yummxg"]
+
+[ext_resource type="Script" path="res://scripts/world_item.gd" id="1_0630n"]
+[ext_resource type="Texture2D" uid="uid://c3w4ca0obxyaj" path="res://sprites/items/Item_Plant.png" id="2_qyweo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bgd8u"]
+radius = 20.0
+
+[sub_resource type="Animation" id="Animation_k1nrs"]
+resource_name = "world_item_idle"
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0.25, -0.25, 0, 0.25, 0, 0.275, -0.25, 0, 0.25, 0, 0.25, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0.25, -0.25, 0, 0.25, 0, 0.245, -0.25, 0, 0.25, 0, 0.25, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+
+[sub_resource type="Animation" id="Animation_unytb"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.25, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.25, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oqw1q"]
+_data = {
+"RESET": SubResource("Animation_unytb"),
+"world_item_idle": SubResource("Animation_k1nrs")
+}
+
+[node name="PlantWorldItem" type="StaticBody2D"]
+collision_layer = 3
+script = ExtResource("1_0630n")
+item_element = 3
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bgd8u")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(-2.38419e-07, -11)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_qyweo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+libraries = {
+"": SubResource("AnimationLibrary_oqw1q")
+}
