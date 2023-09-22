@@ -125,6 +125,24 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
 shape = SubResource("CircleShape2D_oxssa")
 
+[node name="AttackCooldowns" type="Node2D" parent="Player"]
+
+[node name="FireballAttackCooldown" type="Timer" parent="Player/AttackCooldowns"]
+wait_time = 0.5
+one_shot = true
+
+[node name="WaterAttackCooldown" type="Timer" parent="Player/AttackCooldowns"]
+wait_time = 0.5
+one_shot = true
+
+[node name="PlantAttackCooldown" type="Timer" parent="Player/AttackCooldowns"]
+wait_time = 0.5
+one_shot = true
+
+[node name="ElectricAttackCooldown" type="Timer" parent="Player/AttackCooldowns"]
+wait_time = 0.5
+one_shot = true
+
 [node name="Map" type="Node2D" parent="."]
 unique_name_in_owner = true
 

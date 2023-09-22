@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://08qf6t8vh2oh"]
 
 [ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_vltg6"]
-[ext_resource type="Texture2D" uid="uid://hcb1mnvqicr8" path="res://sprites/characters/EnemyPlant/ElementsPlant1.png" id="2_p8x0i"]
+[ext_resource type="Texture2D" uid="uid://bnvsuvenhnaif" path="res://sprites/characters/EnemySoul/ElementsSoulEnemy1.png" id="2_rjyig"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kmxbj"]
 radius = 20.0
@@ -81,9 +81,6 @@ collision_mask = 3
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_vltg6")
-enemy_element = 3
-enemy_folder_name = "EnemyPlant"
-enemy_file_name = "ElementsPlant"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_kmxbj")
@@ -107,7 +104,7 @@ debug_color = Color(0.823529, 0, 0, 0.419608)
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(0.15, 0.15)
-texture = ExtResource("2_p8x0i")
+texture = ExtResource("2_rjyig")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 libraries = {

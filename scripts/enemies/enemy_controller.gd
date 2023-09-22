@@ -90,7 +90,6 @@ func _physics_process(_delta):
 
 
 func _make_path():
-	print(detection)
 	if detection:
 		nav_agent.target_position = detection.global_position
 	else:
@@ -127,10 +126,8 @@ func _look_at_target_direction():
 func _on_area_2d_body_entered(body):
 	if body.get_collision_layer() == 1:
 		detection = body
-		print("Entra jugador")
 
 
 func _on_area_2d_body_exited(body):
 	if body.get_collision_layer() == 1:
-		print("Sale jugador")
 		detection = null

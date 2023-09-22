@@ -14,6 +14,10 @@ const PLAYER_PLANT_SCENE = preload("res://scenes/attacks/player_plant.tscn")
 
 @onready var sprite = $Sprite
 @onready var attack_group = %Attacks
+@onready var fireball_attack_cooldown : Timer = $AttackCooldowns/FireballAttackCooldown
+@onready var water_attack_cooldown : Timer = $AttackCooldowns/WaterAttackCooldown
+@onready var plant_attack_cooldown : Timer = $AttackCooldowns/PlantAttackCooldown
+@onready var electric_attack_cooldown : Timer = $AttackCooldowns/ElectricAttackCooldown
 
 # Load the corresponding Player Sprites
 @onready var look_down_sprite = load(SPRITE_PATH_BASE % "1")
@@ -33,6 +37,11 @@ var current_fire_level = 1
 var current_plant_level = 1
 var current_electric_level = 1
 
+var fireball_attack_is_available = true
+var water_attack_is_available = true
+var plant_attack_is_available = true
+var electric_attack_is_available = true
+
 const ELEMENT_ROULETTE = [
 	GAME_ELEMENT.WATER,
 	GAME_ELEMENT.FIRE,
@@ -41,12 +50,48 @@ const ELEMENT_ROULETTE = [
 ]
 
 
-func defeated_enemy():
-	print_debug("Defeated Enemy!")
-
-
 func _ready():
 	$Sprite/AnimationPlayer.play("player_idle")
+	fireball_attack_cooldown.timeout.connect(_fireball_attack_cooldown_ended)
+	water_attack_cooldown.timeout.connect(_water_attack_cooldown_ended)
+	plant_attack_cooldown.timeout.connect(_plant_attack_cooldown_ended)
+	electric_attack_cooldown.timeout.connect(_electric_attack_cooldown_ended)
+
+
+func _start_fireball_attack_cooldown():
+	fireball_attack_is_available = false
+	fireball_attack_cooldown.start()
+
+
+func _start_water_attack_cooldown():
+	water_attack_is_available = false
+	water_attack_cooldown.start()
+
+
+func _start_plant_attack_cooldown():
+	plant_attack_is_available = false
+	plant_attack_cooldown.start()
+
+
+func _start_electric_attack_cooldown():
+	electric_attack_is_available = false
+	electric_attack_cooldown.start()
+
+
+func _fireball_attack_cooldown_ended():
+	fireball_attack_is_available = true
+
+
+func _water_attack_cooldown_ended():
+	water_attack_is_available = true
+
+
+func _plant_attack_cooldown_ended():
+	plant_attack_is_available = true
+
+
+func _electric_attack_cooldown_ended():
+	electric_attack_is_available = true
 
 
 func _process(delta):
@@ -57,11 +102,15 @@ func _process(delta):
 		_attack()
 		
 	if Input.is_action_just_pressed("spawn_enemy"):
-		var enemy = load("res://scenes/enemies/soul_enemy.tscn")
-		var instance = enemy.instantiate()
-		%Enemies.add_child(instance)
-		instance.player = %Player
-		print("hey yo")
+		_debug_spawn_enemy()
+
+
+func _debug_spawn_enemy():
+	var enemy = load("res://scenes/enemies/soul_enemy.tscn")
+	var instance = enemy.instantiate()
+	%Enemies.add_child(instance)
+	instance.player = %Player
+
 
 func _physics_process(_delta):
 	var horizontalInput = Input.get_axis("ui_left", "ui_right")
@@ -82,6 +131,7 @@ func _physics_process(_delta):
 
 
 func _level_up_element(element : GAME_ELEMENT, quantity : int) -> void:
+	# The Player has no Neutral Element attack or level.
 	if element == GAME_ELEMENT.NEUTRAL:
 		return
 	
@@ -111,23 +161,30 @@ func _switch_to_next_element():
 
 func _attack():
 	
-	if selected_element == GAME_ELEMENT.WATER:
+	if selected_element == GAME_ELEMENT.WATER and water_attack_is_available:
+		_water_attack()
+	elif selected_element == GAME_ELEMENT.FIRE and fireball_attack_is_available:
 		_fire_attack()
-	elif selected_element == GAME_ELEMENT.FIRE:
-		_fire_attack()
-	elif selected_element == GAME_ELEMENT.PLANT:
+	elif selected_element == GAME_ELEMENT.PLANT and plant_attack_is_available:
 		_plant_attack()
-	elif selected_element == GAME_ELEMENT.ELECTRIC:
-		_fire_attack()
+	elif selected_element == GAME_ELEMENT.ELECTRIC and electric_attack_is_available:
+		_electric_attack()
+
+
+func _water_attack():
+	_start_water_attack_cooldown()
+	_fire_attack() # TODO Water attack
 
 
 func _fire_attack():
+	_start_fireball_attack_cooldown()
 	var fireball_instance = PLAYER_FIREBALL_SCENE.instantiate()
 	fireball_instance.position = position
 	attack_group.add_child(fireball_instance)
 
 
 func _plant_attack():
+	_start_plant_attack_cooldown()
 	var space_state = get_world_2d().direct_space_state
 	var query = PhysicsRayQueryParameters2D.create(position, get_global_mouse_position())
 	var result = space_state.intersect_ray(query)
@@ -139,6 +196,11 @@ func _plant_attack():
 	var plant_instance = PLAYER_PLANT_SCENE.instantiate()
 	plant_instance.position = target_attack_location
 	attack_group.add_child(plant_instance)
+
+
+func _electric_attack():
+	_start_electric_attack_cooldown()
+	_fire_attack() # TODO: Electric attack
 
 
 func look_at_target_direction():
