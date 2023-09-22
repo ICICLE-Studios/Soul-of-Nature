@@ -1,8 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://08qf6t8vh2oh"]
+[gd_scene load_steps=10 format=3 uid="uid://b4vx2yya6kedc"]
 
-[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_vltg6"]
-[ext_resource type="Texture2D" uid="uid://em7u4skneios" path="res://sprites/circle.png" id="2_8jiha"]
-[ext_resource type="Texture2D" uid="uid://bnvsuvenhnaif" path="res://sprites/characters/EnemySoul/ElementsSoulEnemy1.png" id="2_rjyig"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_vanpk"]
+[ext_resource type="Texture2D" uid="uid://dackuy4f8bo2m" path="res://sprites/characters/EnemyWater/ElementsWater1.png" id="2_pmqj6"]
+[ext_resource type="Texture2D" uid="uid://em7u4skneios" path="res://sprites/circle.png" id="2_qi3dm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kmxbj"]
 radius = 20.0
@@ -76,12 +76,15 @@ font_size = 64
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
-[node name="SoulEnemy" type="CharacterBody2D"]
+[node name="WaterEnemy" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
 motion_mode = 1
 wall_min_slide_angle = 0.0
-script = ExtResource("1_vltg6")
+script = ExtResource("1_vanpk")
+enemy_element = 1
+enemy_folder_name = "EnemyWater"
+enemy_file_name = "ElementsWater"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_kmxbj")
@@ -108,11 +111,11 @@ debug_color = Color(0.823529, 0, 0, 0.419608)
 modulate = Color(0, 0, 0, 0.25098)
 position = Vector2(0, 16)
 scale = Vector2(0.25, 0.125)
-texture = ExtResource("2_8jiha")
+texture = ExtResource("2_qi3dm")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(0.15, 0.15)
-texture = ExtResource("2_rjyig")
+texture = ExtResource("2_pmqj6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 libraries = {

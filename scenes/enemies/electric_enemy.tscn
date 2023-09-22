@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://08qf6t8vh2oh"]
+[gd_scene load_steps=14 format=3 uid="uid://da73fm1r65d2c"]
 
-[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_vltg6"]
-[ext_resource type="Texture2D" uid="uid://em7u4skneios" path="res://sprites/circle.png" id="2_8jiha"]
-[ext_resource type="Texture2D" uid="uid://bnvsuvenhnaif" path="res://sprites/characters/EnemySoul/ElementsSoulEnemy1.png" id="2_rjyig"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_riy2t"]
+[ext_resource type="Texture2D" uid="uid://em7u4skneios" path="res://sprites/circle.png" id="2_2ipbx"]
+[ext_resource type="Texture2D" uid="uid://5d8i47pbtb0p" path="res://sprites/characters/EnemyElectricity/ElementsElectricity1.png" id="2_7ujjd"]
+[ext_resource type="Texture2D" uid="uid://brjq2uai8afjx" path="res://sprites/circle_gradient.png" id="3_qyebq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kmxbj"]
 radius = 20.0
@@ -76,12 +77,38 @@ font_size = 64
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
-[node name="SoulEnemy" type="CharacterBody2D"]
+[sub_resource type="Gradient" id="Gradient_sswow"]
+offsets = PackedFloat32Array(0, 0.251852, 0.293827, 0.350617, 0.590123, 1)
+colors = PackedColorArray(0.301961, 0.501961, 0.580392, 1, 0.301961, 0.501961, 0.580392, 1, 0.92549, 1, 0.580392, 1, 0.301961, 0.501961, 0.580392, 1, 0.301961, 0.501961, 0.580392, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_txdlk"]
+gradient = SubResource("Gradient_sswow")
+width = 8
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w82bf"]
+emission_shape = 1
+emission_sphere_radius = 24.0
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+radial_accel_min = 4.0
+radial_accel_max = 8.0
+angle_min = -45.0
+angle_max = 45.0
+scale_max = 3.0
+color_ramp = SubResource("GradientTexture1D_txdlk")
+
+[node name="ElectricEnemy" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
 motion_mode = 1
 wall_min_slide_angle = 0.0
-script = ExtResource("1_vltg6")
+script = ExtResource("1_riy2t")
+enemy_element = 4
+enemy_folder_name = "EnemyElectricity"
+enemy_file_name = "ElementsElectricity"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_kmxbj")
@@ -105,14 +132,20 @@ shape = SubResource("CircleShape2D_0wwgh")
 debug_color = Color(0.823529, 0, 0, 0.419608)
 
 [node name="Shadow" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 0, 0.25098)
+modulate = Color(0, 0, 0, 0.12549)
 position = Vector2(0, 16)
-scale = Vector2(0.25, 0.125)
-texture = ExtResource("2_8jiha")
+scale = Vector2(0.2, 0.1)
+texture = ExtResource("2_2ipbx")
+
+[node name="Halo" type="Sprite2D" parent="."]
+modulate = Color(1, 0.913725, 0, 0.360784)
+position = Vector2(0, 11)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_qyebq")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(0.15, 0.15)
-texture = ExtResource("2_rjyig")
+texture = ExtResource("2_7ujjd")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 libraries = {
@@ -137,6 +170,11 @@ text = "1"
 label_settings = SubResource("LabelSettings_0gt4p")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+position = Vector2(0, 5)
+process_material = SubResource("ParticleProcessMaterial_w82bf")
+lifetime = 1.5
 
 [connection signal="timeout" from="Navigation/Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="Area/DetectionPlayer" to="." method="_on_area_2d_body_entered"]

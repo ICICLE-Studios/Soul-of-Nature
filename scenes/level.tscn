@@ -1,9 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://brxejphnlvkkt"]
+[gd_scene load_steps=36 format=3 uid="uid://brxejphnlvkkt"]
 
 [ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
 [ext_resource type="Texture2D" uid="uid://bghesvkb3fcbr" path="res://sprites/map/placeholder_ground.png" id="2_317b5"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vpdyx"]
+[ext_resource type="Texture2D" uid="uid://em7u4skneios" path="res://sprites/circle.png" id="3_162k0"]
 [ext_resource type="Texture2D" uid="uid://dq6wa0dy4244q" path="res://sprites/characters/PlayerSoul/ElementsSoulPlayer1.png" id="3_svjcw"]
+[ext_resource type="Texture2D" uid="uid://brjq2uai8afjx" path="res://sprites/circle_gradient.png" id="4_1o1id"]
 [ext_resource type="PackedScene" uid="uid://d0gc7xhpjufm" path="res://scenes/world_items/fire_world_item.tscn" id="4_fgst1"]
 [ext_resource type="PackedScene" uid="uid://08qf6t8vh2oh" path="res://scenes/enemies/soul_enemy.tscn" id="4_uut6c"]
 [ext_resource type="PackedScene" uid="uid://dal4567l588mg" path="res://scenes/world_items/water_world_item.tscn" id="5_3q2sm"]
@@ -12,8 +14,12 @@
 [ext_resource type="Script" path="res://scripts/current_element_display.gd" id="7_5wpqg"]
 [ext_resource type="PackedScene" uid="uid://ditldg6j00rxu" path="res://scenes/world_items/electric_world_item.tscn" id="7_8nao5"]
 [ext_resource type="Texture2D" uid="uid://dackuy4f8bo2m" path="res://sprites/characters/EnemyWater/ElementsWater1.png" id="8_ylhh0"]
+[ext_resource type="PackedScene" uid="uid://df557u6bk7w4q" path="res://scenes/enemies/fire_enemy.tscn" id="9_gthnt"]
 [ext_resource type="Texture2D" uid="uid://hcb1mnvqicr8" path="res://sprites/characters/EnemyPlant/ElementsPlant1.png" id="9_y66vn"]
 [ext_resource type="Texture2D" uid="uid://5d8i47pbtb0p" path="res://sprites/characters/EnemyElectricity/ElementsElectricity1.png" id="10_72lfl"]
+[ext_resource type="PackedScene" uid="uid://b4vx2yya6kedc" path="res://scenes/enemies/water_enemy.tscn" id="10_yjfq3"]
+[ext_resource type="PackedScene" uid="uid://bqkbdj1qixeup" path="res://scenes/enemies/plant_enemy.tscn" id="11_foq6a"]
+[ext_resource type="PackedScene" uid="uid://da73fm1r65d2c" path="res://scenes/enemies/electric_enemy.tscn" id="12_t210c"]
 [ext_resource type="AudioStream" uid="uid://baepyd2x2kkj7" path="res://audios/change_element_to_fire.ogg" id="14_8i4p8"]
 [ext_resource type="AudioStream" uid="uid://dpsbpj7jywq33" path="res://audios/change_element_to_plant.ogg" id="15_jryyq"]
 [ext_resource type="AudioStream" uid="uid://dnoko8nxi8pgo" path="res://audios/change_element_to_thunder.ogg" id="16_tpr0u"]
@@ -85,6 +91,29 @@ _data = {
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oxssa"]
 
+[sub_resource type="Gradient" id="Gradient_361pj"]
+offsets = PackedFloat32Array(0, 0.145679, 0.659259, 1)
+colors = PackedColorArray(0.986546, 0.986546, 0.986546, 0.123188, 1, 1, 1, 1, 0.890785, 0.890785, 0.890785, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vo862"]
+gradient = SubResource("Gradient_361pj")
+width = 8
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7v765"]
+emission_shape = 1
+emission_sphere_radius = 24.0
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+radial_accel_min = 4.0
+radial_accel_max = 8.0
+angle_min = -45.0
+angle_max = 45.0
+scale_max = 3.0
+color_ramp = SubResource("GradientTexture1D_vo862")
+
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vf1p"]
 vertices = PackedVector2Array(2048, -2048, 2048, 2048, -2048, 2048, -2048, -2048)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
@@ -97,6 +126,7 @@ outline_size = 24
 outline_color = Color(0, 0, 0, 1)
 
 [node name="Level" type="Node2D"]
+y_sort_enabled = true
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
@@ -106,6 +136,18 @@ script = ExtResource("2_vpdyx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_yy7ra")
+
+[node name="Shadow" type="Sprite2D" parent="Player"]
+modulate = Color(0, 0, 0, 0.25098)
+position = Vector2(0, 16)
+scale = Vector2(0.25, 0.125)
+texture = ExtResource("3_162k0")
+
+[node name="Halo" type="Sprite2D" parent="Player"]
+modulate = Color(0.996078, 1, 1, 0.12549)
+position = Vector2(0, 1)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_1o1id")
 
 [node name="Sprite" type="Sprite2D" parent="Player"]
 scale = Vector2(0.15, 0.15)
@@ -140,8 +182,13 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[node name="Particles" type="GPUParticles2D" parent="Player"]
+position = Vector2(0, 5)
+process_material = SubResource("ParticleProcessMaterial_7v765")
+
 [node name="Map" type="Node2D" parent="."]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="Map"]
 visible = false
@@ -158,6 +205,7 @@ region_rect = Rect2(0, 0, 64, 64)
 
 [node name="Items" type="Node2D" parent="."]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="FireWorldItem" parent="Items" instance=ExtResource("4_fgst1")]
 position = Vector2(288, -32)
@@ -173,14 +221,29 @@ position = Vector2(224, -96)
 
 [node name="Enemies" type="Node2D" parent="."]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="SoulEnemy" parent="Enemies" instance=ExtResource("4_uut6c")]
 position = Vector2(-160, -160)
 
+[node name="FireEnemy" parent="Enemies" instance=ExtResource("9_gthnt")]
+position = Vector2(-224, -160)
+
+[node name="WaterEnemy" parent="Enemies" instance=ExtResource("10_yjfq3")]
+position = Vector2(-288, -160)
+
+[node name="PlantEnemy" parent="Enemies" instance=ExtResource("11_foq6a")]
+position = Vector2(-96, -160)
+
+[node name="ElectricEnemy" parent="Enemies" instance=ExtResource("12_t210c")]
+position = Vector2(-32, -160)
+
 [node name="Attacks" type="Node2D" parent="."]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
+z_index = 200
 zoom = Vector2(2, 2)
 script = ExtResource("1_2wegk")
 
