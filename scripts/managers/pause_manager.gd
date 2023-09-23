@@ -1,11 +1,10 @@
-class_name PauseManager
 extends Node
 
 
 signal game_paused()
 signal game_unpaused()
 
-static var game_is_paused : bool = false
+var game_is_paused : bool = false
 
 
 func _ready():
@@ -15,7 +14,7 @@ func _ready():
 func _input(event):
 	if not event.is_action_pressed("pause_game"):
 		return
-	
+
 	if game_is_paused:
 		_unpause_game()
 	else:
@@ -23,8 +22,12 @@ func _input(event):
 
 
 func _pause_game():
+	Engine.time_scale = 0.0
 	game_is_paused = true
+	game_paused.emit()
 
 
 func _unpause_game():
+	Engine.time_scale = 1.0
 	game_is_paused = false
+	game_unpaused.emit()

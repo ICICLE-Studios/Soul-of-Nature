@@ -9,6 +9,9 @@ const MOUSE_LOOK_RANGE = 0.2
 
 
 func _input(event):
+	if PauseManager.game_is_paused:
+		return
+	
 	if event is InputEventMouseButton:
 		
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
@@ -20,5 +23,8 @@ func _input(event):
 		zoom.y = clampf(zoom.y, 0.5, 4.0)
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
+	if PauseManager.game_is_paused:
+		return
+	
 	position = player.position + get_local_mouse_position() * MOUSE_LOOK_RANGE

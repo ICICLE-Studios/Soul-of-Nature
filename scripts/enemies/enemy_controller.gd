@@ -84,6 +84,9 @@ func _ready():
 
 
 func _physics_process(_delta):
+	if PauseManager.game_is_paused:
+		return
+		
 	var dir = to_local(nav_agent.get_next_path_position()).normalized() 
 	velocity = dir * SPEED if detection else Vector2(0, 0)
 	move_and_slide()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://brxejphnlvkkt"]
+[gd_scene load_steps=39 format=3 uid="uid://brxejphnlvkkt"]
 
 [ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_2wegk"]
 [ext_resource type="Texture2D" uid="uid://bghesvkb3fcbr" path="res://sprites/map/placeholder_ground.png" id="2_317b5"]
@@ -25,6 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://dnoko8nxi8pgo" path="res://audios/change_element_to_thunder.ogg" id="16_tpr0u"]
 [ext_resource type="AudioStream" uid="uid://dmw3dd4pfw67i" path="res://audios/change_element_to_water.ogg" id="17_58roi"]
 [ext_resource type="Script" path="res://scripts/element_level_label.gd" id="18_posy2"]
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="26_23vsv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy7ra"]
 
@@ -123,6 +124,15 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-2048, -2048, -2048, 20
 font_size = 128
 font_color = Color(1, 1, 0, 1)
 outline_size = 24
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ypk6c"]
+font_size = 24
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pmi3v"]
+outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
 [node name="Level" type="Node2D"]
@@ -354,13 +364,33 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PauseMenu" type="MarginContainer" parent="PlayerCamera/UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("26_23vsv")
 
 [node name="Background" type="ColorRect" parent="PlayerCamera/UI/PauseMenu"]
 layout_mode = 2
 color = Color(0.12549, 0.12549, 0.0941176, 0.705882)
+
+[node name="Label" type="Label" parent="PlayerCamera/UI/PauseMenu"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Game Paused"
+label_settings = SubResource("LabelSettings_ypk6c")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Label2" type="Label" parent="PlayerCamera/UI/PauseMenu"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "
+
+Press ESC again to resume."
+label_settings = SubResource("LabelSettings_pmi3v")
+horizontal_alignment = 1
+vertical_alignment = 2

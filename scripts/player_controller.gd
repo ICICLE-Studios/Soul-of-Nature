@@ -94,7 +94,10 @@ func _electric_attack_cooldown_ended():
 	electric_attack_is_available = true
 
 
-func _process(delta):
+func _process(_delta):
+	if PauseManager.game_is_paused:
+		return
+	
 	if Input.is_action_just_pressed("next_player_element"):
 		_switch_to_next_element()
 	
@@ -113,6 +116,9 @@ func _debug_spawn_enemy():
 
 
 func _physics_process(_delta):
+	if PauseManager.game_is_paused:
+		return
+	
 	var horizontalInput = Input.get_axis("ui_left", "ui_right")
 	var verticalInput = Input.get_axis("ui_up", "ui_down")
 	
@@ -136,16 +142,16 @@ func _level_up_element(element : GAME_ELEMENT, quantity : int) -> void:
 		return
 	
 	if element == GAME_ELEMENT.WATER:
-		current_water_level += 1
+		current_water_level += quantity
 		player_leveled_up_element.emit(element, current_water_level)
 	elif element == GAME_ELEMENT.FIRE:
-		current_fire_level += 1
+		current_fire_level += quantity
 		player_leveled_up_element.emit(element, current_fire_level)
 	elif element == GAME_ELEMENT.PLANT:
-		current_plant_level += 1
+		current_plant_level += quantity
 		player_leveled_up_element.emit(element, current_plant_level)
 	elif element == GAME_ELEMENT.ELECTRIC:
-		current_electric_level += 1
+		current_electric_level += quantity
 		player_leveled_up_element.emit(element, current_electric_level)
 
 
