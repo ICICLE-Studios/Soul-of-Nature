@@ -4,6 +4,7 @@ extends Area2D
 signal killed_enemy()
 
 const GAME_ELEMENT = preload("res://scripts/game_element.gd").GameElement
+const FIREBALL_EXPLOSION = preload("res://scenes/attacks/player_fireball_explosion.tscn")
 const SPEED = 300.0
 
 var _motion_direction : Vector2
@@ -29,4 +30,6 @@ func hit_enemy(body):
 		return
 		
 	body.touched_by_player_attack(GAME_ELEMENT.FIRE)
+	var instance = FIREBALL_EXPLOSION.instantiate()
+	#get_tree().root.add_child(instance) # ILLO ESTA MIERDA PETA, COMO LO HACEMOS???
 	queue_free()

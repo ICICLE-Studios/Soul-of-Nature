@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://btqt5j675rkik"]
+
+[ext_resource type="Script" path="res://scripts/attacks/player_fireball_explosion.gd" id="1_nfouy"]
+[ext_resource type="Texture2D" uid="uid://brjq2uai8afjx" path="res://sprites/circle_gradient.png" id="2_jiu4v"]
+[ext_resource type="Texture2D" uid="uid://dq4ucpirj5oa1" path="res://sprites/attacks/placeholder_fireball.png" id="3_68lsf"]
+[ext_resource type="AudioStream" uid="uid://dd1r3ste41gw0" path="res://audios/fire-magic.mp3" id="4_3im3s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvlly"]
+radius = 60.0
+
+[node name="PlayerFireballExplosion" type="Area2D"]
+collision_layer = 4
+collision_mask = 3
+input_pickable = false
+script = ExtResource("1_nfouy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wvlly")
+
+[node name="Gradient" type="Sprite2D" parent="."]
+modulate = Color(0.996094, 0.496094, 0, 1)
+texture = ExtResource("2_jiu4v")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.172549)
+texture = ExtResource("3_68lsf")
+
+[node name="DestroyTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_3im3s")
+autoplay = true
+
+[connection signal="timeout" from="DestroyTimer" to="." method="_on_destroy_timer_timeout"]

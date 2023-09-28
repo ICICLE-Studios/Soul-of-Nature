@@ -11,6 +11,7 @@ const SPEED = 150.0
 const SPRITE_PATH_BASE = "res://sprites/characters/PlayerSoul/ElementsSoulPlayer%s.png"
 const PLAYER_FIREBALL_SCENE = preload("res://scenes/attacks/player_fireball.tscn")
 const PLAYER_PLANT_SCENE = preload("res://scenes/attacks/player_plant.tscn")
+const PLAYER_ELECTRIC_SCENE = preload("res://scenes/attacks/player_electric.tscn")
 
 @onready var sprite = $Sprite
 @onready var attack_group = %Attacks
@@ -192,7 +193,7 @@ func _fire_attack():
 func _plant_attack():
 	_start_plant_attack_cooldown()
 	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(position, get_global_mouse_position())
+	var query = PhysicsRayQueryParameters2D.create(position, get_global_mouse_position(), 1)
 	var result = space_state.intersect_ray(query)
 	var target_attack_location = get_global_mouse_position()
 	
@@ -206,7 +207,17 @@ func _plant_attack():
 
 func _electric_attack():
 	_start_electric_attack_cooldown()
-	_fire_attack() # TODO: Electric attack
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(position, get_global_mouse_position())
+	var result = space_state.intersect_ray(query)
+	var target_attack_location = get_global_mouse_position()
+	
+	if result:
+		target_attack_location = result.position
+	
+	var electric_instance = PLAYER_ELECTRIC_SCENE.instantiate()
+	electric_instance.position = target_attack_location
+	attack_group.add_child(electric_instance)
 
 
 func look_at_target_direction():
