@@ -14,4 +14,7 @@ func _on_body_entered(body : Node2D):
 		return
 	
 	body.touched_by_player_attack(GAME_ELEMENT.FIRE)
+
+
+func _on_destroy_timer_timeout():
 	queue_free()

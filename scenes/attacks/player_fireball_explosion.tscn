@@ -26,7 +26,7 @@ modulate = Color(1, 1, 1, 0.172549)
 texture = ExtResource("3_68lsf")
 
 [node name="DestroyTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 0.4
 one_shot = true
 autostart = true
 

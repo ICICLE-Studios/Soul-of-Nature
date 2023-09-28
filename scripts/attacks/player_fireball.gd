@@ -31,5 +31,6 @@ func hit_enemy(body):
 		
 	body.touched_by_player_attack(GAME_ELEMENT.FIRE)
 	var instance = FIREBALL_EXPLOSION.instantiate()
-	#get_tree().root.add_child(instance) # ILLO ESTA MIERDA PETA, COMO LO HACEMOS???
+	get_node("/root/Level").add_child(instance) # ILLO ESTA MIERDA PETA, COMO LO HACEMOS???
+	instance.position = position
 	queue_free()
