@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://bm5djhp763y3v"]
+
+[ext_resource type="Script" path="res://scripts/attacks/player_electric.gd" id="1_phkak"]
+[ext_resource type="Texture2D" uid="uid://brjq2uai8afjx" path="res://sprites/circle_gradient.png" id="2_rb88o"]
+[ext_resource type="Texture2D" uid="uid://bh5rwmb1eorsh" path="res://sprites/items/Item_Electricity.png" id="3_v6g4b"]
+[ext_resource type="AudioStream" uid="uid://dd1r3ste41gw0" path="res://audios/fire-magic.mp3" id="4_pw0bc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvlly"]
+radius = 24.0
+
+[node name="PlayerElectric" type="Area2D"]
+collision_layer = 4
+collision_mask = 3
+input_pickable = false
+script = ExtResource("1_phkak")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wvlly")
+
+[node name="Gradient" type="Sprite2D" parent="."]
+modulate = Color(1, 0.996078, 0, 1)
+scale = Vector2(0.185, 0.185)
+texture = ExtResource("2_rb88o")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -13)
+scale = Vector2(0.185, 0.185)
+texture = ExtResource("3_v6g4b")
+
+[node name="DestroyTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_pw0bc")
+pitch_scale = 1.18
+autoplay = true
+
+[connection signal="body_entered" from="." to="." method="hit_enemy"]
+[connection signal="timeout" from="DestroyTimer" to="." method="_on_destroy_timer_timeout"]
