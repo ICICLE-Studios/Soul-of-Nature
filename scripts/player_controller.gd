@@ -110,7 +110,16 @@ func _process(_delta):
 
 
 func _debug_spawn_enemy():
-	var enemy = load("res://scenes/enemies/soul_enemy.tscn")
+	
+	var enemies = [
+		"res://scenes/enemies/soul_enemy.tscn",
+		"res://scenes/enemies/fire_enemy.tscn",
+		"res://scenes/enemies/water_enemy.tscn",
+		"res://scenes/enemies/plant_enemy.tscn",
+		"res://scenes/enemies/electric_enemy.tscn"
+	]
+	
+	var enemy = load(enemies[randi() % enemies.size()])
 	var instance = enemy.instantiate()
 	%Enemies.add_child(instance)
 	instance.player = %Player

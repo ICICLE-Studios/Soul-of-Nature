@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b4vx2yya6kedc"]
+[gd_scene load_steps=10 format=3 uid="uid://hvf75xic0p83"]
 
 [ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_vanpk"]
 [ext_resource type="Texture2D" uid="uid://dackuy4f8bo2m" path="res://sprites/characters/EnemyWater/ElementsWater1.png" id="2_pmqj6"]

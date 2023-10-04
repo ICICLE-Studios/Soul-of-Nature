@@ -38,7 +38,9 @@ var start_position
 
 ## Call this method whenever a Player Attack affects this Enemy.
 func touched_by_player_attack(attack_element : GAME_ELEMENT) -> void:
-	if _can_be_defeated_by_element(attack_element):
+	if _can_be_defeated_by_element(attack_element) && attack_element == GAME_ELEMENT.ELECTRIC:
+		be_defeated()
+	elif _can_be_defeated_by_element(attack_element):
 		be_defeated()
 
 

@@ -18,7 +18,7 @@ script = ExtResource("1_nfouy")
 shape = SubResource("CircleShape2D_wvlly")
 
 [node name="Gradient" type="Sprite2D" parent="."]
-modulate = Color(0.996094, 0.496094, 0, 1)
+modulate = Color(0.964706, 0.52549, 0, 1)
 texture = ExtResource("2_jiu4v")
 
 [node name="Sprite" type="Sprite2D" parent="."]
